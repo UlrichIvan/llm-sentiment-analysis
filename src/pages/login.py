@@ -1,8 +1,5 @@
 import streamlit as st
-
-from utils.helpers import get_image
-
-
+from utils.helpers import get_image,__DIR__
 def app():
     company = get_image(filename="company_logo.png")
     st.markdown(
@@ -19,12 +16,15 @@ def app():
         .stVerticalBlock{
             text-align:center;
         }
-        .stButton > button {
+        .stButton > [data-testid="stBaseButton-secondary"] {
             height: auto;
             padding-top: 20px !important;
             padding-bottom: 20px !important;
             width: 200px;
             text-transform:capitalize;
+        }
+        [data-testid="stElementContainer"]{
+            margin:auto;
         }
     </style>
 """,
@@ -45,8 +45,14 @@ def app():
             unsafe_allow_html=True,
         )
         if st.button(
-            "Login with Google",
-            icon="😍",
-        ):
-            st.login()
+                "Get's started",
+                icon="😍",
+            ):
+                st.user={
+                    "is_logged_in":True,
+                    "email_verified":True,
+                    "picture" :"" ,
+                    "email":"user@email.com"
+                }
+                st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)

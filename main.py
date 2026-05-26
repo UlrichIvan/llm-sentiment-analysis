@@ -22,13 +22,13 @@ class App:
         self.pages = []
         self.options_icons = []
         self.options_menus = []
+        
 
-        if st.user.is_logged_in and st.user.email_verified:
+        if st.user.get("is_logged_in") and st.user.get("email_verified"):
             actions = [
                 analyse.app,
                 results.app,
                 infos.app,
-                delete.app,
                 about.app,
                 logout.app,
             ]
@@ -45,6 +45,7 @@ class App:
             st.session_state["menu_selected"] = self.options_menus[
                 st.session_state["page_index"]
             ]
+
 
     def get_menu_by_lang(self, lang) -> tuple | None:
         if lang in list(MENUS.keys()):
@@ -71,20 +72,24 @@ class App:
                         order : 3;
                         margin-left: auto;
                     }}
+                    [data-testid="stBaseButton-headerNoPadding"]:hover{{
+                        color:white!important;
+                    }}
+                    [data-testid="stElementContainer"]{{
+                        margin: auto;
+                    }}
+                    [data-testid="data-testid="stMarkdown"] [data-testid="stMarkdownContainer"]{{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }}
                     [data-testid="stSidebarHeader"]:hover [data-testid="stSidebarCollapseButton"]{{
                         color:white!important;
                     }}
                     [data-testid="stSidebarHeader"]{{
-                        display : {"flex" if st.user.is_logged_in else "none!important"};
+                        display : {"flex" if st.user.get("is_logged_in") else "none!important"};
                         align-items:center;
                         padding-bottom:0px;
-                    }}
-                    [data-testid="stSidebarHeader"]::before{{
-                       content:"{st.user.name if st.user.is_logged_in else "Anonymous"}";
-                       display : inline-block;
-                       color:white;
-                       order : 2;
-                       text-transform:"capitalize";
                     }}
                     [data-testid="stLogo"]{{
                         width: 50px;
@@ -116,7 +121,7 @@ class App:
                 st.session_state["menu_selected"] = values[page_index]
 
     def run(self):
-        if st.user.is_logged_in and st.user.email_verified:
+        if st.user.get("is_logged_in") and st.user.get("email_verified"):
             # load css
             self.sidebar_style()
             # display side bar
@@ -139,16 +144,6 @@ class App:
 
     def sidebar(self):
         with st.sidebar:
-            if (
-                st.user.is_logged_in
-                and st.user.email_verified
-                and hasattr(st.user, "picture")
-            ):
-                st.logo(
-                    image=str(st.user.picture),
-                    link=str(st.user.picture),
-                    icon_image=str(st.user.picture),
-                )
             option_menu(
                 menu_title=None,
                 options=self.options_menus,
@@ -172,4 +167,4 @@ class App:
 try:
     App().run()
 except Exception as e:
-    pass
+   raise e

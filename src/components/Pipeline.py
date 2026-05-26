@@ -35,7 +35,7 @@ class Pipeline(BasePipe):
         st.session_state["is_loading"] = True
 
     def create_user_directory(self) -> bool:
-        return init_user_directory(str(st.user.email))
+        return init_user_directory(str(st.user.get("email")))
 
     def clean_data_processing(self) -> pd.DataFrame | None:
         st.markdown(f"### {self.translate(word="Cleaning up reviews")}")

@@ -14,6 +14,7 @@ USER_FOLDER_ANALYSE_NAME = "analyses"
 USER_FOLDER_RESULTS_NAME = "results"
 
 
+
 nlp = spacy.load("fr_core_news_lg")
 
 __DIR__ = dirname(dirname(abspath(__file__)))
@@ -305,7 +306,7 @@ def get_image(filename: str) -> str:
         Exception: For other errors during file reading or encoding.
     """
     try:
-        file_path = join(__DIR__, "public", filename)
+        file_path = join(__DIR__, "static", filename)
         if not os.path.exists(file_path):
             raise FileNotFoundError(f"Image file not found: {file_path}")
         with open(file_path, "rb") as file_:

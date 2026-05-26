@@ -29,7 +29,7 @@ def app(page: str, lang: str):
         )
         if st.button(tte(page=page, lang=lang, word="Confirm")):
             if radio == options[0]:
-                drop_user_data(str(st.user.email))
+                drop_user_data(str(st.user.get("email")))
                 st.balloons()
                 time.sleep(2)
                 st.rerun(scope="app")

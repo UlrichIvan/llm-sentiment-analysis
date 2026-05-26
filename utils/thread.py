@@ -1,10 +1,6 @@
-from collections.abc import Callable
-from threading import Thread
-from typing import Any, Iterable, Mapping
 
 import pandas as pd
 
-from utils.helpers import clean_text, predict
 
 
 class WorkerThread:

@@ -37,8 +37,8 @@ def app(page: str, lang: str):
                 ),
             )
             if selected_diagram and selected_model:
-                df = get_data_polarity(user_id=str(st.user.email), model=selected_model)
-                data = get_data(user_id=str(st.user.email), model=selected_model)
+                df = get_data_polarity(user_id=str(st.user.get("email")), model=selected_model)
+                data = get_data(user_id=str(st.user.get("email")), model=selected_model)
                 if df is not None:
                     if data is not None:
                         st.markdown(
