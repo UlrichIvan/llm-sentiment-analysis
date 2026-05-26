@@ -39,5 +39,7 @@ def app(page: str, lang: str):
             unsafe_allow_html=True,
         )
         if st.button(tte(page=page, lang=lang, word="Logout"), icon="😍"):
-            st.logout()
+            st.user={}
+            st.session_state.clear()
+            st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
