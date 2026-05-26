@@ -7,3 +7,4 @@ google_identity.json
 gdrive_settings.yaml
 drive_client_id.json
 projet_prod_cleint.json
+models/Camembert/*.safetensors
