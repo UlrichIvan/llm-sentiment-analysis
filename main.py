@@ -161,6 +161,7 @@ class App:
                 index=LANGUAGES.index(st.session_state["language"]),
                 on_change=self.set_lang,
                 args=(int(st.session_state["page_index"]),),
+                disabled=st.session_state["is_loading"]
             )
 
 
