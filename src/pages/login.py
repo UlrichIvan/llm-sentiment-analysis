@@ -40,7 +40,7 @@ def app():
         )
         st.markdown(
             f"""
-            <h2 style="padding-top:0px;">Easy and Quick Analyses Reviews</h2>
+            <h2 style="padding-top:0px; text-align:center;">Easy and Quick Analyses Reviews</h2>
             """,
             unsafe_allow_html=True,
         )

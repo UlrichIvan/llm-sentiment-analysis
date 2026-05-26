@@ -81,7 +81,6 @@ def init_user_directory(user_id: str) -> bool:
 def save_data_polarity(df: pd.DataFrame, user_id: str, model: str) -> pd.DataFrame:
     user_data_polarity = Path(
         join(
-            __DIR__,
             STORAGE_DIR,
             str(user_id),
             model,
@@ -102,7 +101,6 @@ def get_data_polarity(user_id: str, model: str) -> pd.DataFrame | None:
     try:
         user_file = Path(
             join(
-                __DIR__,
                 STORAGE_DIR,
                 str(user_id),
                 model,
@@ -132,7 +130,6 @@ def get_data(user_id: str, model: str) -> None | pd.DataFrame:
     try:
         user_data_original = Path(
             join(
-                __DIR__,
                 STORAGE_DIR,
                 str(user_id),
                 model,
@@ -167,7 +164,6 @@ def get_data_cleaned(user_id: str, model: str) -> None | pd.DataFrame:
     try:
         user_file = Path(
             join(
-                __DIR__,
                 STORAGE_DIR,
                 str(user_id),
                 model,
@@ -202,7 +198,6 @@ def save_cleaned_data(data: pd.DataFrame, user_id: str, model: str) -> pd.DataFr
     """
     user_data_cleaned = Path(
         join(
-            __DIR__,
             STORAGE_DIR,
             str(user_id),
             model,
@@ -322,7 +317,6 @@ def get_image(filename: str) -> str:
 def drop_user_data(user_id: str) -> bool:
     user_folder = Path(
         join(
-            __DIR__,
             STORAGE_DIR,
             user_id,
         )

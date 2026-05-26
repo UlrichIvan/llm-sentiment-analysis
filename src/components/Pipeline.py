@@ -6,7 +6,6 @@ import plotly.express as px
 import zipfile
 from src.components.Pipe import BasePipe
 from utils.helpers import (
-    __DIR__,
     COLUMNS_DATA_POLARITY,
     DIAGRAMS,
     METRCIS,
@@ -109,11 +108,8 @@ class Pipeline(BasePipe):
             user_id=st.session_state["user_id"],
             model=selected_model,
         )
-        st.balloons()
-        st.toast(body=self.translate(word="Analyze performed successfully"), icon="😍")
-        time.sleep(1.5)
-        st.session_state["dataset_polarity"] = df_polarity
         st.session_state["is_loading"] = False
+        st.session_state["dataset_polarity"] = df_polarity
         st.rerun(scope="app")  # rerun app to hide button
 
     def update_dataset_state(self):
@@ -331,7 +327,7 @@ class Pipeline(BasePipe):
                 nb_threads = st.number_input(
                     label=self.translate(word="Set the number of workers"),
                     min_value=5,
-                    max_value=10,
+                    max_value=20,
                     icon=":material/engineering:",
                     disabled=st.session_state["is_loading"],
                     help=self.translate(
@@ -389,7 +385,7 @@ class Pipeline(BasePipe):
         # disabled btn if needle
         if st.session_state["is_loading"] == True:
             btn_reset = st.button(
-                label="reset",
+                label="refresh",
                 type="secondary",
                 icon=":material/refresh:",
             )

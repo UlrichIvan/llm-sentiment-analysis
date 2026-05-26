@@ -12,7 +12,6 @@ import pandas as pd
 from wordcloud import WordCloud
 
 from utils.helpers import (
-    __DIR__,
     STORAGE_DIR,
     USER_FOLDER_ANALYSE_NAME,
     clean_text,
@@ -33,7 +32,7 @@ class BasePipe:
             st.session_state["is_loading"] = False
 
         if "user_id" not in st.session_state:
-            st.session_state["user_id"] = str(self.user.email)
+            st.session_state["user_id"] = str(self.user.get("email"))
 
         if "dataset" not in st.session_state:
             st.session_state["dataset"] = None
@@ -72,7 +71,6 @@ class BasePipe:
 
         user_data_original = Path(
             join(
-                __DIR__,
                 STORAGE_DIR,
                 str(user_id),
                 model,
