@@ -18,7 +18,7 @@ def app(page: str, lang: str):
                     word="Select a model(AUC : Overall Performance, Accuracy : Percent Of True Positif)"
                 ),
                 pipeline.models,
-                key="selected_model",
+                key="results_selected_model",
                 format_func=pipeline.format_func_model,
                 index=pipeline.models.index("SVC"),
                 disabled=st.session_state["is_loading"],

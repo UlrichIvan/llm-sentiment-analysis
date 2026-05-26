@@ -339,7 +339,7 @@ class Pipeline(BasePipe):
                         word="Select a model(AUC : Overall Performance, Accuracy : Percent Of True Positif)"
                     ),
                     self.models,
-                    key="selected_model",
+                    key="pipeline_selected_model",
                     format_func=self.format_func_model,
                     index=self.models.index("SVC"),
                     disabled=st.session_state["is_loading"],

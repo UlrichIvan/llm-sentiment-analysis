@@ -528,6 +528,7 @@ class BasePipe:
             options=list(range(len(w_slices))),
             format_func=lambda v: f"{v + 1}",
             index=0,
+            key=f"pages_{'positives' if positive else 'negatives'}"
         )
 
         df_pos = None
