@@ -61,7 +61,7 @@ class Pipeline(BasePipe):
         if btn_runner:
             st.toast(
                 body=self.translate(
-                    word="Clean up reviews process is running. if you want to stop it click on reset button on the top of page"
+                    word="Clean up reviews process is running. if you want to stop it, click on refresh button on the sidebar"
                 ),
                 icon="😍",
             )
@@ -308,7 +308,6 @@ class Pipeline(BasePipe):
         return f"{self.translate(word="Model")}(AUC= {float(METRCIS[model].get('auc',""))*100}% , accuracy= {float(METRCIS[model].get('accuracy',""))*100}%)"
 
     def user_pipeline_analysis(self):
-        self.disabled_rerun_app()  # display reset button
         if st.session_state["dataset"] is not None and len(st.session_state["dataset"]):
             # display dataset
             st.markdown(
@@ -380,19 +379,6 @@ class Pipeline(BasePipe):
                     type_diagram=selected_diagram,
                     title=f"{self.translate(word="Analyze Results of Sentiments")}({st.session_state["dataset_polarity"].shape[0]} {self.translate(word="Total reviews")})",
                 )
-
-    def disabled_rerun_app(self):
-        # disabled btn if needle
-        if st.session_state["is_loading"] == True:
-            btn_reset = st.button(
-                label="refresh",
-                type="secondary",
-                icon=":material/refresh:",
-            )
-
-            if btn_reset:
-                st.session_state["is_loading"] = False
-                st.rerun(scope="app")
 
     @st.dialog(title=" ")
     def alert_user(self, data: pd.DataFrame | None):

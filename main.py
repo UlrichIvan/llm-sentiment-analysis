@@ -166,6 +166,18 @@ class App:
                 args=(int(st.session_state["page_index"]),),
                 disabled=st.session_state["is_loading"]
             )
+            st.markdown("<br/>",unsafe_allow_html=True)
+            if st.session_state["is_loading"] == True:
+                btn_reset = st.button(
+                    label="refresh",
+                    type="secondary",
+                    icon=":material/refresh:",
+                    width="stretch"
+                )
+
+                if btn_reset:
+                    st.session_state["is_loading"] = False
+                    st.rerun(scope="app")
 
 
 try:
