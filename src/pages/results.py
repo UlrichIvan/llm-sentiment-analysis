@@ -51,7 +51,9 @@ def app(page: str, lang: str):
                         type_diagram=selected_diagram,
                         title=f"{pipeline.translate(word="Analyze Results of Sentiments")}({df.shape[0]} {pipeline.translate(word="Total reviews")})",
                     )
-                    pipeline.display_word_cloud(df_polarity=df)
+                    with st.status(label=f"{pipeline.translate(word="loading")}...",state="running",expanded=True) as status:
+                      pipeline.display_word_cloud(df_polarity=df)
+                      status.update(label=f"{pipeline.translate(word="MORE RESULTS")}",state="complete",expanded=True)
                 else:
                     st.markdown(
                         """

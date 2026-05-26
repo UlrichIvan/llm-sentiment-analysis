@@ -161,6 +161,8 @@ DICTIONNARY = {
         },
         "Resultados": {
             # display results
+            "loading":"cargando",
+            "MORE RESULTS":"RESULTADOS ADICIONALES",
             "polarity": "Polaridad",
             "Negative": "Negativo",
             "Positive": "Positivo",
@@ -292,6 +294,8 @@ DICTIONNARY = {
         },
         "Résultats": {
             # display results
+            "loading":"chargement",
+            "MORE RESULTS":"plus de résultats",
             "polarity": "polarité",
             "Negative": "Négatif",
             "Positive": "Positif",
@@ -423,6 +427,8 @@ DICTIONNARY = {
         },
         "Ergebnisse": {
             # display results
+            "loading":"Laden",
+            "MORE RESULTS":"WEITERE ERGEBNISSE",
             "polarity": "Polarität",
             "Negative": "Negativ",
             "Positive": "Positiv",

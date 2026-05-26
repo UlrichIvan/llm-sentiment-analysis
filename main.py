@@ -17,6 +17,9 @@ class App:
             st.session_state["page_index"] = -1
         if "menu_selected" not in st.session_state:
             st.session_state["menu_selected"] = None
+        if "is_loading" not in st.session_state:
+            st.session_state["is_loading"] = False
+
 
         self.options_menus = []
         self.pages = []
