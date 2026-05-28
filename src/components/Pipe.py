@@ -16,6 +16,7 @@ from utils.helpers import (
     USER_FOLDER_ANALYSE_NAME,
     clean_text,
     get_important_words_cloud,
+    get_model,
     predict,
     tte,
 )
@@ -250,13 +251,14 @@ class BasePipe:
     def threads_make_predictions(
         self,
         threads: list[PredictThread],
+        model_name:str
     ) -> list:
         data = []
         with st.spinner(
             text=f"{self.translate(word="Workers in progress...")}({self.translate(word="Total workers")} = {len(threads)})",
             show_time=True,
         ):
-
+            model=get_model(model_name=model_name)
             for i, thread in enumerate(threads):
                 bar = st.progress(0)
                 total = len(thread.data)
@@ -264,11 +266,11 @@ class BasePipe:
                 if total > 1:
                     data_predict = [
                         [
-                            thread.data["text"][j],
-                            get_important_words_cloud(thread.data["text"][j]),
+                            thread.data["text"].iloc[j],
+                            get_important_words_cloud(thread.data["text"].iloc[j]),
                             predict(
-                                [thread.data["text"][j]],
-                                model=thread.selected_model,
+                                [thread.data["text"].iloc[j]],
+                                model=model,
                             ),
                         ]
                         for j in range(total)
@@ -287,7 +289,7 @@ class BasePipe:
                             get_important_words_cloud(thread.data["text"][0]),
                             predict(
                                 [thread.data["text"][0]],
-                                model=thread.selected_model,
+                                model=model,
                             ),
                         ]
                     ]

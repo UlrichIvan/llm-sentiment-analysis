@@ -1,3 +1,5 @@
+from typing import Any
+import streamlit as st
 import pandas as pd
 import joblib
 import os
@@ -7,12 +9,12 @@ import base64
 import re, string
 from pathlib import Path
 import shutil
+from transformers import pipeline
 
 from utils.tools import DICTIONNARY
 
 USER_FOLDER_ANALYSE_NAME = "analyses"
 USER_FOLDER_RESULTS_NAME = "results"
-
 
 
 nlp = spacy.load("fr_core_news_lg")
@@ -22,12 +24,44 @@ __DIR__ = dirname(dirname(abspath(__file__)))
 STORAGE_DIR = join(__DIR__, "src", "storage")
 MODELS_DIR = join(__DIR__, "src", "models")
 
-MODELS = ["LR", "SVC"]
-METRCIS = {"LR": {"auc": 0.83, "accuracy": 0.75}, "SVC": {"auc": 0.96, "accuracy": 0.9}}
+MODELS = ["LR", "SVC","CAMEMBERT"]
+METRCIS = {
+    "LR": {"auc": 0.83, "accuracy": 0.75,"f1-score": 0.76}, 
+    "SVC": {"auc": 0.96, "accuracy": 0.9,"f1-score": 0.76},
+    "CAMEMBERT": {"auc":"","accuracy": 0.76,"f1-score": 0.76}
+}
 DIAGRAMS = ["pie", "histogram"]
 WORDS_SENDS = ["VERB", "ADJ"]
 MAX_TOKENS = 1_000_000
 COLUMNS_DATA_POLARITY = ["text", "word", "polarity"]
+
+@st.cache_resource
+def get_lr_model():
+    model_path = join(MODELS_DIR, "LR.model")
+    if not os.path.exists(model_path):
+        raise FileNotFoundError(f"Model file not found: {model_path}")
+    return joblib.load(model_path)
+
+@st.cache_resource
+def get_svc_model():
+    model_path = join(MODELS_DIR, "svc.model")
+    if not os.path.exists(model_path):
+        raise FileNotFoundError(f"Model file not found: {model_path}")
+    return joblib.load(model_path)
+
+@st.cache_resource
+def get_camembert_model():
+    model_path = join(MODELS_DIR, "Camembert")
+    if not os.path.isdir(model_path):
+        raise FileNotFoundError(f"Model file not found: {model_path}")
+    _model= pipeline(
+        "text-classification", 
+        model=model_path, 
+        tokenizer=model_path,
+        device=-1 # use CPU
+    )
+    return _model
+
 
 
 def get_doc_text(text: str) -> str:
@@ -61,10 +95,10 @@ def init_user_directory(user_id: str) -> bool:
             os.mkdir(STORAGE_DIR)
         for _, model in enumerate(MODELS):
             fd_analyses = Path(
-                join(__DIR__, STORAGE_DIR, user_id, model, USER_FOLDER_ANALYSE_NAME)
+                join(STORAGE_DIR, user_id, model, USER_FOLDER_ANALYSE_NAME)
             )
             fd_results = Path(
-                join(__DIR__, STORAGE_DIR, user_id, model, USER_FOLDER_RESULTS_NAME)
+                join(STORAGE_DIR, user_id, model, USER_FOLDER_RESULTS_NAME)
             )
             for _, file in enumerate([fd_analyses, fd_results]):
                 if not file.parent.parent.exists():
@@ -232,6 +266,8 @@ def clean_text(text):
     """
     # Remove URLs
     text = re.sub(r"https?://\S+|www\.\S+", "", text)
+    # Convert to lowercase
+    text = text.lower()
     # Remove HTML tags
     text = re.sub(r"<.*?>", "", text)
     # Remove punctuation
@@ -240,8 +276,6 @@ def clean_text(text):
     text = re.sub(r"\n", "", text)
     # Remove alphanumeric words (words containing digits)
     text = re.sub(r"\b\w*\d\w*\b", "", text)
-    # Convert to lowercase
-    text = text.lower()
     # Remove remaining non-alphabetic characters (except spaces)
     text = re.sub(r"[^a-z\s]", "", text)
     # Normalize repeated characters (e.g., "soooo" -> "so")
@@ -251,40 +285,43 @@ def clean_text(text):
     return " ".join(words)
 
 
-def predict(X: list, model: str) -> tuple:
+def predict(X: list, model: Any) -> str:
     """
     Predicts the sentiment of the input data using the specified machine learning model.
 
     Args:
         X (list): The input features for prediction.
         model (str): The name of the model to use for prediction.
-            Accepts "SVC" for Support Vector Machine Classifier or any other value for Logistic Regression.
+            Accepts "SVC" for Support Vector Machine Classifier or any other value for Logistic Regression and camembert model.
 
     Returns:
-        tuple: The predicted sentiment label or value.
+        str: The predicted sentiment label ("Positive" or "Negative").
 
     Raises:
         FileNotFoundError: If the specified model file does not exist.
         Exception: If there is an error during model loading or prediction.
     """
     try:
-        if model == "SVC":
-            model_path = join(MODELS_DIR, "svc.model")
-            if not os.path.exists(model_path):
-                raise FileNotFoundError(f"Model file not found: {model_path}")
-            svc_model = joblib.load(model_path)
-            return svc_model.predict(X)[0]
+        # Scikit-Learn models (LR/SVC)
+        if not hasattr(model, "tokenizer"): 
+             prediction = model.predict(X)[0]
+             return str(prediction)
+        # Hugging Face models (Camembert)
         else:
-            model_path = join(MODELS_DIR, "LR.model")
-            if not os.path.exists(model_path):
-                raise FileNotFoundError(f"Model file not found: {model_path}")
-            LR_model = joblib.load(model_path)
-            return LR_model.predict(X)[0]
+            result = model(X)[0]
+            return "Negative" if result['label'] == 'LABEL_0' else "Positive"
     except FileNotFoundError as e:
         raise e
     except Exception as e:
         raise Exception(f"Error during model prediction: {e}")
 
+def get_model(model_name):
+    if model_name == "SVC":
+        return get_svc_model()
+    elif model_name =="LR":
+        return get_lr_model()
+    else:    
+       return get_camembert_model()
 
 def get_image(filename: str) -> str:
     """

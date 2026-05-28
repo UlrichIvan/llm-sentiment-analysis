@@ -2,7 +2,6 @@ from io import BytesIO
 import streamlit as st
 from typing import Any
 import pandas as pd
-import plotly.express as px
 import zipfile
 from src.components.Pipe import BasePipe
 from utils.helpers import (
@@ -10,6 +9,7 @@ from utils.helpers import (
     DIAGRAMS,
     METRCIS,
     MODELS,
+    get_data,
     init_user_directory,
     save_cleaned_data,
     save_data_polarity,
@@ -86,12 +86,7 @@ class Pipeline(BasePipe):
         self, data: pd.DataFrame, selected_model: str, nb_threads: int = 5
     ) -> None:
         st.session_state["is_loading"] = True
-        threads = self.build_threads_predicter(data, nb_threads, selected_model)
-
-        st.markdown("<br>", unsafe_allow_html=True)
-
-        _data_polarity = self.threads_make_predictions(threads)
-
+        _data_polarity = self.make_polarity(data, selected_model, nb_threads)
         # create
         df_polarity = save_data_polarity(
             df=pd.DataFrame(_data_polarity, columns=COLUMNS_DATA_POLARITY),
@@ -110,7 +105,23 @@ class Pipeline(BasePipe):
         )
         st.session_state["is_loading"] = False
         st.session_state["dataset_polarity"] = df_polarity
-        st.rerun(scope="app")  # rerun app to hide button
+
+    def make_polarity(self, data, selected_model, nb_threads)->list:
+        if selected_model in ["LR","SVC"]:
+            threads = self.build_threads_predicter(data, nb_threads, selected_model)
+            st.markdown("<br>", unsafe_allow_html=True)
+            _data_polarity = self.threads_make_predictions(threads=threads,model_name=selected_model)
+            return _data_polarity
+        else :
+            dataset=get_data(user_id=st.session_state["user_id"],model=selected_model)
+            if dataset is not None:
+                threads = self.build_threads_predicter(dataset, nb_threads, selected_model)
+                return self.threads_make_predictions(threads=threads,model_name=selected_model)
+            elif st.session_state["dataset"] is not None:
+                threads = self.build_threads_predicter(st.session_state["dataset"], nb_threads, selected_model)
+                return self.threads_make_predictions(threads=threads,model_name=selected_model)
+            else:
+                return []
 
     def update_dataset_state(self):
         st.session_state["user_uploading"] = True
@@ -148,7 +159,7 @@ class Pipeline(BasePipe):
                 if df_pos is not None:
                     data.append(df_pos)
 
-                if df_pos is not None:
+                if df_neg is not None:
                     data.append(df_neg)
 
                 if len(data):
@@ -302,10 +313,15 @@ class Pipeline(BasePipe):
                 body=self.translate(word="an error occured, please try again"),
                 icon="🚨",
             )
-            self.user_pipeline_analysis()
 
     def format_func_model(self, model: str) -> str:
-        return f"{self.translate(word="Model")}(AUC= {float(METRCIS[model].get('auc',""))*100}% , accuracy= {float(METRCIS[model].get('accuracy',""))*100}%)"
+        AUC=METRCIS[model].get('auc')
+        F1SCORE =METRCIS[model].get('f1-score')
+        accuracy=METRCIS[model].get('accuracy')
+        if(model=="CAMEMBERT"):
+            return f"{self.translate(word=f"{model}")}(f1-score= {float(F1SCORE)*100}% , accuracy= {accuracy*100}%)"
+        else:
+            return f"{self.translate(word=f"{model}")}(f1-score= {float(F1SCORE)*100}% , accuracy= {accuracy*100}%, auc={AUC*100}%)"
 
     def user_pipeline_analysis(self):
         if st.session_state["dataset"] is not None and len(st.session_state["dataset"]):
@@ -332,6 +348,7 @@ class Pipeline(BasePipe):
                     help=self.translate(
                         word="set number of workers to perform analyse of reviews",
                     ),
+                    key=f"analyse_nb_workers"
                 )
                 selected_model = st.selectbox(
                     self.translate(
@@ -359,6 +376,7 @@ class Pipeline(BasePipe):
                         selected_model=selected_model,
                         nb_threads=nb_threads,
                     )
+                    st.rerun(scope="app")  # rerun app to hide button
 
             if st.session_state["dataset_polarity"] is not None and len(
                 st.session_state["dataset_polarity"]
