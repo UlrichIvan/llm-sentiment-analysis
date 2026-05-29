@@ -65,6 +65,17 @@ Make sure that the virtual env .venv has been actived successfully to go on the 
 
 After .venv activate, you can install all dependencies into requirement.txt in the root of projet(`llm-sentiment-analysis` folder) with the command below :
 
+First install torch for cpu (this is required before the installation of requirements.txt dependencies)
+
+```bash
+pip install torch==2.12.0+cpu --extra-index-url https://download.pytorch.org/whl/cpu
+```
+
+This command will be install torch for cpu on your virtual env. now when you will install transformers for hugging face, it will detect that you have installed torch for cpu, then it will install the appropriate transformers for cpu.
+If this step is not execute in this order, maybe you will encounter and error if GPU not support by your computer.<br>
+
+After it, you will run the command below to install the rest of dependencies;
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -108,6 +119,8 @@ Application support four Language :
 - fr : for French language
 - es : for spain language
 - de : for Deustch language
+
+`Remarks` : you can uncounter not results or disable button analyse when you select and run analyse for the first time with Camembert model, this is because the load of model for the first time take some time, after it the model wil be cacched by streamlit and the rest of time model should be quickly to load, it's the advantages of cache use into Streamlit.
 
 ## About Analyse
 
