@@ -82,7 +82,7 @@ pip install -r requirements.txt
 
 This command will be install all dependencies into,the virtual env of projet.
 
-In the next step, we are going to download one file verify necessary for our projet. Indeed after the train of Camembert LLM, the hugging Face librarie(Transformers) had generated many files that one very important is the `model.safetensors`, but this file is very large and i uncounter and error with github to push that on this repository, that's the reason we must download the file on google drive. To do that just clik on the link below : <br>
+In the next step, we are going to download one file verify necessary for our projet. Indeed after the train of Camembert LLM, the hugging Face librarie(Transformers) had generated many files that one very important is the `model.safetensors`, but this file is very large and i encounter and error with github to push that on this repository, that's the reason we must download the file on google drive. To do that just clik on the link below : <br>
 [Download model.safetensors file here](https://drive.google.com/file/d/1ecC2IObgN6Y9Tv5zuT-DfRKB0CLdsmHb/view?usp=drive_link)
 
 After the download fihish, you will move the file into the Camembert folder into the `src/models/Camembert` folder.
@@ -90,7 +90,7 @@ in this `src/models` folder, you will see others models trained with `scikit-lea
 
 Camembert model is the new trained model with `Hugging Face` librairie to achieve the same task`(sentiments analysis)`.
 
-After all the previous step, you can run the projet and use it, just run the command below :
+After all the previous steps, you can run the projet and use it, just run the command below :
 
 ```bash
 streamlit run .\main.py
@@ -120,7 +120,7 @@ Application support four Language :
 - es : for spain language
 - de : for Deustch language
 
-`Remarks` : you can uncounter not results or disable button analyse when you select and run analyse for the first time with Camembert model, this is because the load of model for the first time take some time, after it the model wil be cacched by streamlit and the rest of time model should be quickly to load, it's the advantages of cache use into Streamlit.
+`Remarks` : you can encounter not results or disable button analyse when you select and run analyse for the first time with Camembert model, this is because the load of model for the first time take some time, after it the model wil be cacched by streamlit and the rest of time model should be quickly to load, it's the advantages of cache use into Streamlit.
 
 ## About Analyse
 
@@ -140,7 +140,7 @@ Other reason that we are choose camembert LLM is that it's training on the frenc
 
 In the results pages, into the more results, you will see some words like emojies, url, etc. on the negative and positive words,But you will never see it for others models, that is because sklearn model use the cleaning dataset and hugging Face not use the cleaned dataset in the case of our application.
 
-## refresh Analyse
+## Refresh Analyse
 
 In the application, on the sidebar, when you run analyse of application, you can see the `Refresh` button that allow you to reset or refresh the `Analyse` page if you need it or if some button cannot be clicked.
 I added it, to provide the control of user to reset the `Analyse` page when he or she needs or to cancel some disable utils buttons found on the `Analyse` page.

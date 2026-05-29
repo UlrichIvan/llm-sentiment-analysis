@@ -1,7 +1,6 @@
 __pycache__
 .venv
 .env
-.streamlit/secrets.toml
 storage
 google_identity.json
 gdrive_settings.yaml
