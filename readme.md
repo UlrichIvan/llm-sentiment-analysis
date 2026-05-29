@@ -85,8 +85,8 @@ This command will be install all dependencies into,the virtual env of projet.
 In the next step, we are going to download one file verify necessary for our projet. Indeed after the train of Camembert LLM, the hugging Face librarie(Transformers) had generated many files that one very important is the `model.safetensors`, but this file is very large and i uncounter and error with github to push that on this repository, that's the reason we must download the file on google drive. To do that just clik on the link below : <br>
 [Download model.safetensors file here](https://drive.google.com/file/d/1ecC2IObgN6Y9Tv5zuT-DfRKB0CLdsmHb/view?usp=drive_link)
 
-After the download fihish, you will move the file into the Camembert folder into the `src/models` folder.
-in this folder, you will see other model trained with `scikit-learn` librairie for the same task`(sentiments analysis)`.
+After the download fihish, you will move the file into the Camembert folder into the `src/models/Camembert` folder.
+in this `src/models` folder, you will see others models trained with `scikit-learn` librairie for the same task`(sentiments analysis)`.
 
 Camembert model is the new trained model with `Hugging Face` librairie to achieve the same task`(sentiments analysis)`.
 
