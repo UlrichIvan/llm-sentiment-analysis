@@ -9,7 +9,8 @@ import base64
 import re, string
 from pathlib import Path
 import shutil
-from transformers import pipeline
+import torch
+from transformers import CamembertTokenizer, pipeline
 
 from utils.tools import DICTIONNARY
 
@@ -54,11 +55,12 @@ def get_camembert_model():
     model_path = join(MODELS_DIR, "Camembert")
     if not os.path.isdir(model_path):
         raise FileNotFoundError(f"Model file not found: {model_path}")
+    tokenizer = CamembertTokenizer.from_pretrained("camembert-base")
     _model= pipeline(
         "text-classification", 
         model=model_path, 
-        tokenizer=model_path,
-        device=-1 # use CPU
+        tokenizer=tokenizer,
+        device= -1
     )
     return _model
 
