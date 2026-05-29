@@ -102,6 +102,13 @@ this command will be run the projet on your localhost, just follow the link to s
 
 This projet use the [Streamlit](https://streamlit.io/) librairie to make all results that you will see as UI Experience. I have also make some custom css to provide the good appear of application like the sidebar and other part of application that you will see.
 
+The dataset must be contains the `text` columns that content the reviews of users, that is and [exemple of dataset](https://drive.google.com/file/d/1GBoRp3hQg62e13osfRRTJBZ2ZP46b6wW/view?usp=drive_link) that you can use with application.
+
+Clik [here to download dataset](https://drive.google.com/file/d/1GBoRp3hQg62e13osfRRTJBZ2ZP46b6wW/view?usp=drive_link)
+that you will import in the `Analyses` page.
+
+If the format of dataset is not respet, you will get and error message from application to indicate you this explanation.
+
 This application has five pages :
 
 - `Home`: This page present the goal and quick preview of the application, and the `Get's started` button to start using the application.
