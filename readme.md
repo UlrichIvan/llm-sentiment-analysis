@@ -20,13 +20,17 @@ To use the proposals service of application, you need to follow the current step
 First clone this projet on your local machine :
 
 ```bash
-    git clone https://github.com/UlrichIvan/llm-sentiment-analysis.git
+git clone https://github.com/UlrichIvan/llm-sentiment-analysis.git
 ```
 
-After it, move into the root of projet (llm-sentiment-analysis Folder) with command line or open the projet into our IDE ont the root of projet(`llm-sentiment-analysis` folder).
+After it, move into the root of projet (llm-sentiment-analysis Folder) with command line or open the projet into our IDE ont the root of projet(`llm-sentiment-analysis` folder). use the command below to do that :
+
+```bash
+cd llm-sentiment-analysis
+```
 
 When the projet is open into your IDE(i recommand you to open projet into your IDE), you must create the isolation of your projet with virtual environment.<br/>
-To mdo that, you can use the command below on the root of your projet((`llm-sentiment-analysis` folder)) :
+To mdo that, you can use the command below on the root of your projet(`llm-sentiment-analysis` folder) :
 
 ```bash
 python -m venv .venv
@@ -42,24 +46,20 @@ To do that, we can use one command below depend on the OS of your machine.
 source .venv/bin/activate
 
 # windows with powershell, use the command below the comment
-.\venv\Scripts\Activate.ps1
+.\.venv\Scripts\Activate.ps1
 
 # windows with cmd, use the command below the comment
-venv\Scripts\activate.bat
+.venv\Scripts\activate.bat
 ```
 
 if you encounter and error with powershell, open the powershell terminal as Administrator and execute the command below
 
 ```pwsh
-# first command
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
-
-# second command (on the root of projet)
-.\venv\Scripts\Activate.ps1
+(Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned) ; (& .venv\Scripts\Activate.ps1)
 ```
 
 After it you will see the virtual env activate on your terminal.
-some terminal do not show the virtual env. if you use vscode IDE you can see on the status bar below the .venv selected as environment.
+some terminal cannot show the virtual env. if you use vscode IDE you can see on the status bar below the .venv selected as environment when you open an python file, for example open the `main.py` file on the root of projet, you will the `.venv` environment selected.
 
 Make sure that the virtual env .venv has been actived successfully to go on the next steps, otherwise you can encounter the error if some projet on your computer use the same packages with this projet.
 
@@ -126,6 +126,11 @@ That is the raison you will see the `cleaning step` before the `analyse step` in
 Other reason that we are choose camembert LLM is that it's training on the french language, because our projet can only make the analyse of french reviews.
 
 In the results pages, into the more results, you will see some words like emojies, url, etc. on the negative and positive words,But you will never see it for others models, that is because sklearn model use the cleaning dataset and hugging Face not use the cleaned dataset in the case of our application.
+
+## refresh Analyse
+
+In the application, on the sidebar, when you run analyse of application, you can see the `Refresh` button that allow you to reset or refresh the `Analyse` page if you need it or if some button cannot be clicked.
+I added it, to provide the control of user to reset the `Analyse` page when he or she needs or to cancel some disable utils buttons found on the `Analyse` page.
 
 ## Training Camembert model
 
