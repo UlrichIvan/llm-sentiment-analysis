@@ -127,6 +127,10 @@ Other reason that we are choose camembert LLM is that it's training on the frenc
 
 In the results pages, into the more results, you will see some words like emojies, url, etc. on the negative and positive words,But you will never see it for others models, that is because sklearn model use the cleaning dataset and hugging Face not use the cleaned dataset in the case of our application.
 
+## Training Camembert model
+
+To see how i will trained Camembert model on CPU, you can see the `llm_sentiments_analysis.ipynb` notebook on the root of projet that describe all steps and analyses necessary to achieve the goal of our projet for Camembert model.
+
 ## Summary
 
 Thank you for your attention, for this projet.
