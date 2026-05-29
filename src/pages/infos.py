@@ -29,9 +29,8 @@ def app(page: str, lang: str):
         <img src="data:image/jpeg;base64,{results_analysis}" alt="results analysis" class="img-fluid">
         {tte(page=page,lang=lang,word="<br>In this steps, application will be show some results for analyses.<br>**Note** : To show more results, you can go to the **Results** section")}
        
-        5.{tte(page=page,lang=lang,word= "**Tip** : Application will give you instructions to achieve the goal of analyses.<br>You can use the left sidebar to discover application sections. You can also download all result of analyse if need.")}
-
-        6.{tte(page=page,lang=lang,word="**RGPD** : You can delete your data at any time in the <b>Delete</b> section of the sidebar if you need.<br>If you have any suggestions, please share it with me on")} <a class="me-2" href="{LINKED_IN}">LinkedIn</a> {tte(page=page,lang=lang,word="to improve user experience, and application")}.<br>{tte(page=page,lang=lang,word="Thank you")}.
+        5.{tte(page=page,lang=lang,word= "**Tip** : Application will give you instructions to achieve the goal of analyses.<br>You can use the left sidebar to discover application sections. You can also download all result of analyse if need.")}.
+        <br>{tte(page=page,lang=lang,word="Thank you")}.
     """,
         unsafe_allow_html=True,
     )
